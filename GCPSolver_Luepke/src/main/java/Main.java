@@ -3,7 +3,6 @@ import parse.ProblemParser;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.*;
 
 public class Main {
@@ -60,61 +59,6 @@ public class Main {
         }
     }
 
-    private static int[] solve(int node, int[][] nodeConnections, final int[] colors) {
-        final int[] newColors = Arrays.copyOf(colors, colors.length);
-        if (node < colors.length) {
-            for (int i = 0; i < colors.length; i++) {
-                if (isPossible(node, i, nodeConnections, colors)) {
-                    newColors[node] = i;
-                    return solve(node + 1, nodeConnections, newColors);
-                }
-            }
-            return solve(node, nodeConnections, newColors);
-        }
-        return newColors;
-    }
-
-    private static int[] solveNonTriangularFirstChild(int node, int[][] nodeConnections, final int[] colors) {
-        final int[] newColors = Arrays.copyOf(colors, colors.length);
-        if (node < colors.length) {
-            if (nodeConnections[node].length == 0) {
-                return solveNonTriangularFirstChild(node + 1, nodeConnections, newColors);
-            }
-            final int color = colors[node];
-            final int adjNode = nodeConnections[node][0];
-            for (int j = 0; j < nodeConnections[adjNode].length; j++) {
-                if (isPossible(nodeConnections[adjNode][j], color, nodeConnections, colors)) {
-                    newColors[nodeConnections[adjNode][j]] = color;
-                    return solveNonTriangularFirstChild(node + 1, nodeConnections, newColors);
-                }
-            }
-        }
-        return newColors;
-    }
-
-    private static int[] swapColors(int node, int[][] nodeConnections, final int[] colors) {
-        final int[] newColors = Arrays.copyOf(colors, colors.length);
-        if (node < colors.length) {
-            for (int i = 0; i < colors.length; i++) {
-                if (isPossible(node, colors[i], nodeConnections, colors) && i != node) {
-                    newColors[node] = colors[i];
-                    return swapColors(node + 1, nodeConnections, newColors);
-                }
-            }
-        }
-        return newColors;
-    }
-
-    private static int[] children(final int node, final int[][] nodeConnections, final int[] colors) {
-        if (node < colors.length) {
-            final int[] newColors = Arrays.copyOf(colors, colors.length);
-            if (isPossible(node, colors[node], nodeConnections, colors)) {
-                return children(node + 1, nodeConnections, colors);
-            }
-        }
-        return colors;
-    }
-
     private static int[] plateauSearch(final int[][] nodeConnections, final int[] colors, final int chrN) {
         final int[] newColors = Arrays.copyOf(colors, colors.length);
         int chromaticNumber = chrN;
@@ -138,7 +82,6 @@ public class Main {
         return newColors;
     }
 
-
     private static int getChromaticNumber(int[] colors) {
         int res = 1;
         for (int i = 1; i < colors.length; i++) {
@@ -151,7 +94,6 @@ public class Main {
         }
         return res;
     }
-
 
     private static boolean isPossible(int node, int color, int[][] nodeConnections, final int[] colors) {
         if (color >= 0 && color < colors.length) {
