@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="GCPSolver_Luepke" />
+        <module name="GCP_Plateau_Solver" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="GCP_Plateau_Solver" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -2,9 +2,9 @@ package parse;
 
 import lombok.Getter;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 @Getter
@@ -15,7 +15,7 @@ public class ProblemParser {
 
     public ProblemParser(final String fileName) {
         try (Stream<String> stream = Files
-                .lines(Paths.get(getClass().getClassLoader().getResource(fileName).getPath()))) {
+                .lines(new File(fileName).toPath())) {
 
             stream.forEach(l -> {
                 if (!l.trim().isEmpty()) {
@@ -28,6 +28,10 @@ public class ProblemParser {
                         final String[] connectionSplit = l.split(" ");
                         final int node = Integer.parseInt(connectionSplit[1]) - 1;
                         final int connectedNode = Integer.parseInt(connectionSplit[2]) - 1;
+                        /*
+                        Add all connections to each node, also the duplicates so iterating and checking if a color is
+                        valid gets much easier
+                         */
                         final int[] newConnectedNodes1 = new int[this.nodeConnections[node].length + 1];
                         final int[] newConnectedNodes2 = new int[this.nodeConnections[connectedNode].length + 1];
                         for (int i = 0; i < this.nodeConnections[node].length; i++) {
